@@ -55,7 +55,20 @@ $_SESSION['time'] = time();
         <p></p>
         <div id="lfoods" class="table-responsive"></div>
         <hr>
-        <div><button id="btnKreiraj" name="btnKreiraj" class="btn btn-success" onclick="addFood()">Add new</button></div>
+        <div><button id="btnCreate" name="btnCreate" class="btn btn-success" onclick="addFood()">Add new</button></div>
+        <div id="addNewFood" style="display: none">
+            <div>
+                <input id="foodName" name="name" type="text" placeholder="Name" > <br>
+                <input id="cal" name="cal" type="number" placeholder="Calories" > <br>
+                <input id="protein" name="protein" type="number" placeholder="Proteins" > <br>
+                <input id="carbs" name="carbs" type="number" placeholder="Carbs" > <br>
+                <input id="fat" name="fat" type="number" placeholder="Fat" > <br>
+                <input id="serv" name="serv" type="text" placeholder="Serving size" > <br>
+                <input id="desc" name="desc" type="text" placeholder="Description" > <br>
+            </div>
+            <div><button id="btnAdd" name="btnAdd" class="btn btn-success" onclick="saveFood()">Save data</button></div>
+        </div>
+
     </div>
 </div>
 
@@ -74,7 +87,6 @@ $_SESSION['time'] = time();
             else {
                 ll = '<table class="table"><thead><tr><td>Name</td><td>Calories</td><td>Proteins</td><td>Carbs</td><td>Fat</td><td>Serving siza</td><td>Description</td><td></td><td></td></tr></thead><tbody>';
                 var recs = JSON.parse(data);
-                console.log(recs);
                     var farray = recs.description;
                     for (var f in farray){
                         ll+='<tr><td>'+farray[f].name+'</td><td>'+farray[f].calories+'</td><td>'+farray[f].protein+'</td><td>'+farray[f].carbs+'</td><td>'+farray[f].fat+'</td><td>'+farray[f].servSize+'</td><td>'+farray[f].description+'</td>';
@@ -93,7 +105,45 @@ $_SESSION['time'] = time();
         alert("Currently not possible...");
     }
     function addFood(){
-        alert("Currently not possible...");
+        $('#addNewFood').css({"display":"block"});
+        $('#btnCreate').css({"display":"none"});
+    }
+    function saveFood() {
+        var foodName = $('#foodName').val();
+        var cal = $('#cal').val();
+        var protein = $('#protein').val();
+        var carbs = $('#carbs').val();
+        var fat = $('#fat').val();
+        var serv = $('#serv').val();
+        var desc = $('#desc').val();
+
+        $.ajax({
+            type:"POST",
+            url:"newfood.php",
+            data:{
+                name: foodName,
+                cal: cal,
+                protein:protein,
+                carbs:carbs,
+                fat:fat,
+                serv:serv,
+                desc:desc
+            }
+        }).done(function (data) {
+            console.log(data);
+            $('#foodName').val("");
+            $('#cal').val("");
+            $('#protein').val("");
+            $('#carbs').val("");
+            $('#fat').val("");
+            $('#serv').val("");
+            $('#desc').val("");
+            $('#addNewFood').css({"display":"none"});
+            $('#btnCreate').css({"display":"block"});
+            showlist();
+        });
+
+
     }
 </script>
 </body>
