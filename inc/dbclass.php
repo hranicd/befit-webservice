@@ -29,6 +29,7 @@ class dbclass {
 	public function closeConnection() {
 		if ($this->conn != null){
 			$this->conn->close();
+            $this->conn=null;
 		}
 	}
 	function selectData($sqlQuery){

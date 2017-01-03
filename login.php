@@ -1,6 +1,6 @@
 <?php
-require_once ('dbclass.php');
-require_once ('funkcije.php');
+require_once('inc/dbclass.php');
+require_once ('inc/funkcije.php');
 if(isset($_POST['username'])&&isset($_POST['password'])) { //dal su poslani username i pass
     $username = htmlentities($_POST['username']);
     $password = htmlentities($_POST['password']);
@@ -15,6 +15,7 @@ if(isset($_POST['username'])&&isset($_POST['password'])) { //dal su poslani user
     if (authorizeUser($username, $encPass) == true) {   //provjera kombinacije usernamea i passworda
         $response["status"] = "success";
         $response["description"] = "Logged in!";
+        $response["user"]=getUserID($username,$encPass);
         echo json_encode($response);
         return;
     }

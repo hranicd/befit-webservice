@@ -1,6 +1,6 @@
 <?php
-require_once ('dbclass.php');
-require_once ('funkcije.php');
+require_once('inc/dbclass.php');
+require_once ('inc/funkcije.php');
 if(isset($_POST['username'])&&isset($_POST['password'])&&isset($_POST['email'])) {
     $username = htmlentities($_POST['username']);
     $password = htmlentities($_POST['password']);
