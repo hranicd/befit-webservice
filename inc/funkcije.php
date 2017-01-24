@@ -134,11 +134,22 @@ function getAllFoods(){
 function getUserFoods($userID){
     $db = new dbclass();
     $records = array();
-    $result = $db->selectData("select * from foodsDiary where userID='$userID'");
+    $result = $db->selectData("select fd.recordID as recordID, fd.time as time, fd.quantity, f.name as foodName, f.calories as cal  from foodsDiary fd, foods f where fd.userID='$userID' and fd.foodID=f.id");
     if ($result != null && (mysqli_num_rows($result) > 0)) {
         while ($f = mysqli_fetch_assoc($result)){
             $records[]=$f;
         }
     }else return null;
     return $records;
+}
+function getAllActivities(){
+    $db = new dbclass();
+    $acts = array();
+    $result = $db->selectData("select * from activities");
+    if ($result != null && (mysqli_num_rows($result) > 0)) {
+        while ($s = mysqli_fetch_assoc($result)){
+            $acts[]=$s;
+        }
+    }else return null;
+    return $acts;
 }

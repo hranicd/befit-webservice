@@ -8,7 +8,7 @@ if(isset($_POST['username'])&&isset($_POST['password'])) { //dal su poslani user
     $response = array();
     if (empty($username) || empty($password)) {     //dal su upisani neki podaci
         $response["status"] = "error";
-        $response["description"] = "Nisu upisani potrebni podaci!";
+        $response["description"] = "Incorrect or no data provided!";
         echo json_encode($response);
         return;
     }

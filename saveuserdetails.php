@@ -20,7 +20,7 @@ if(isset($_POST['userid'])&&isset($_POST['programid'])&&isset($_POST['fullname']
     $response = array();
     if (empty($userID)) {
         $response["status"] = "error";
-        $response["description"] = "No data available!";
+        $response["description"] = "Incorrect or no data provided!";
         echo json_encode($response);
         return;
     }
