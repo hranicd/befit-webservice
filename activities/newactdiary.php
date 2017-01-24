@@ -1,19 +1,19 @@
 <?php
 require_once('../inc/dbclass.php');
 require_once('../inc/funkcije.php');
-if(isset($_POST['userid'])&&isset($_POST['foodid'])&&isset($_POST['time'])&&isset($_POST['quantity'])) {
+if(isset($_POST['userid'])&&isset($_POST['actid'])&&isset($_POST['time'])&&isset($_POST['duration'])) {
     $userID = htmlentities($_POST['userid']);
-    $foodID = htmlentities($_POST['foodid']);
-    $timef = htmlentities($_POST['time']);
-    $qnt = htmlentities($_POST['quantity']);
+    $actID = htmlentities($_POST['actid']);
+    $timea = htmlentities($_POST['time']);
+    $duration = htmlentities($_POST['duration']);
     $response = array();
-    if (empty($userID) || empty($foodID) || empty($timef) || empty($qnt)) {
+    if (empty($userID) || empty($actID) || empty($timea) || empty($duration)) {
         $response["status"] = "error";
         $response["description"] = "Incorrect data provided!";
         echo json_encode($response);
         return;
     }
-    $r = addFoodDiaryRecord($userID, $foodID, $timef, $qnt);
+    $r = addActDiaryRecord($actID,$timea,$duration,$userID);
     if ($r) {
         $response["status"] = "success";
         $response["description"] = "Data saved!";

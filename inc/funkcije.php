@@ -153,3 +153,9 @@ function getAllActivities(){
     }else return null;
     return $acts;
 }
+function addActDiaryRecord($actID, $timea, $dur, $userID){
+    $db = new dbclass();
+    $sql = "INSERT INTO foodsDiary VALUES (NULL, '$actID', '$timea', '$dur', '$userID');";
+    $s = $db->updateData($sql);
+    return $s;
+}
