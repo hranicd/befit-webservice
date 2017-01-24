@@ -159,3 +159,14 @@ function addActDiaryRecord($actID, $timea, $dur, $userID){
     $s = $db->updateData($sql);
     return $s;
 }
+function getUserActivities($userID){
+    $db = new dbclass();
+    $records = array();
+    $result = $db->selectData("select ac.recordID as recordID, ac.time as time, ac.duration as duration, a.name as actName, a.calPerHour as cal from activityDiary ac, activities a where ac.userID='$userID' and ac.activityID=a.id");
+    if ($result != null && (mysqli_num_rows($result) > 0)) {
+        while ($f = mysqli_fetch_assoc($result)){
+            $records[]=$f;
+        }
+    }else return null;
+    return $records;
+}
