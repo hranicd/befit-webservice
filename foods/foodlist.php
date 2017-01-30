@@ -102,7 +102,22 @@ $_SESSION['time'] = time();
         alert("Currently not possible...");
     }
     function deleteFood(id){
-        alert("Currently not possible...");
+        $.ajax({
+            type:"POST",
+            url:"deletefood.php",
+            data:{
+                foodid: id
+            }
+        }).done(function (data) {
+            console.log(data);
+            var res = JSON.parse(data);
+            if(res.status=="error"){
+                alert("This food is used in records and cannot be deleted!");
+            }
+            else{
+                showlist();
+            }
+        });
     }
     function addFood(){
         $('#addNewFood').css({"display":"block"});
