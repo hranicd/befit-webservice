@@ -129,9 +129,9 @@ function addFoodDiaryRecord($userID, $foodID, $time, $qnt){
     $s = $db->updateData($sql);
     return $s;
 }
-function deleteFoodDiaryRecord($recordID){
+function deleteFoodDiaryRecord($recordID,$userID){
     $db = new dbclass();
-    $sql = "DELETE FROM foodsDiary WHERE recordID='$recordID';";
+    $sql = "DELETE FROM foodsDiary WHERE recordID='$recordID' and userID='$userID';";
     $s = $db->updateData($sql);
     return $s;
 }
