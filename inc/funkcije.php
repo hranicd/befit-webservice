@@ -100,6 +100,17 @@ function getUserDetails($userID){
 }
 //</editor-fold>
 //<editor-fold desc="foods">
+function getAllFoods(){
+    $db = new dbclass();
+    $foods = array();
+    $result = $db->selectData("select * from foods");
+    if ($result != null && (mysqli_num_rows($result) > 0)) {
+        while ($f = mysqli_fetch_assoc($result)){
+            $foods[]=$f;
+        }
+    }else return null;
+    return $foods;
+}
 function addNewFood($name, $cal, $protein, $carbs, $fat, $servSize, $desc){
     $db = new dbclass();
     $sql = "INSERT INTO foods VALUES (NULL, '$name', '$cal', '$protein', '$carbs', '$fat', '$servSize', '$desc');";
@@ -124,17 +135,6 @@ function deleteFoodDiaryRecord($recordID){
     $s = $db->updateData($sql);
     return $s;
 }
-function getAllFoods(){
-    $db = new dbclass();
-    $foods = array();
-    $result = $db->selectData("select * from foods");
-    if ($result != null && (mysqli_num_rows($result) > 0)) {
-        while ($f = mysqli_fetch_assoc($result)){
-            $foods[]=$f;
-        }
-    }else return null;
-    return $foods;
-}
 function getUserFoods($userID){
     $db = new dbclass();
     $records = array();
@@ -146,8 +146,21 @@ function getUserFoods($userID){
     }else return null;
     return $records;
 }
-//<editor-fold desc="activities">
+function getTimedFoodRecs($userID,$days){
+    $vrijeme = time()-$days*24*60*60;
+    $vs = date("Y-m-d",$vrijeme);
+    $db = new dbclass();
+    $records = array();
+    $result = $db->selectData("select fd.recordID as recordID, fd.time as time, fd.quantity, f.name as foodName, f.calories as cal  from foodsDiary fd, foods f where fd.userID='$userID' and fd.foodID=f.id and fd.time>'$vs'");
+    if ($result != null && (mysqli_num_rows($result) > 0)) {
+        while ($f = mysqli_fetch_assoc($result)){
+            $records[]=$f;
+        }
+    }else return null;
+    return $records;
+}
 //</editor-fold>
+//<editor-fold desc="activities">
 function getAllActivities(){
     $db = new dbclass();
     $acts = array();
@@ -159,9 +172,27 @@ function getAllActivities(){
     }else return null;
     return $acts;
 }
+function addNewAct($name, $clh){
+    $db = new dbclass();
+    $sql = "INSERT INTO activities VALUES (NULL, '$name', '$clh');";
+    $s = $db->updateData($sql);
+    return $s;
+}
+function deleteActivity($actID){
+    $db = new dbclass();
+    $sql = "DELETE FROM activities where id='$actID'";
+    $s = $db->updateData($sql);
+    return $s;
+}
 function addActDiaryRecord($actID, $timea, $dur, $userID){
     $db = new dbclass();
     $sql = "INSERT INTO foodsDiary VALUES (NULL, '$actID', '$timea', '$dur', '$userID');";
+    $s = $db->updateData($sql);
+    return $s;
+}
+function deleteActDiaryRecord($recID){
+    $db = new dbclass();
+    $sql = "DELETE FROM activityDiary WHERE recordID='$recID';";
     $s = $db->updateData($sql);
     return $s;
 }
@@ -176,21 +207,4 @@ function getUserActivities($userID){
     }else return null;
     return $records;
 }
-function addNewAct($name, $clh){
-    $db = new dbclass();
-    $sql = "INSERT INTO activities VALUES (NULL, '$name', '$clh');";
-    $s = $db->updateData($sql);
-    return $s;
-}
-function deleteActivity($actID){
-    $db = new dbclass();
-    $sql = "DELETE FROM activities where id='$actID'";
-    $s = $db->updateData($sql);
-    return $s;
-}
-function deleteActDiaryRecord($recID){
-    $db = new dbclass();
-    $sql = "DELETE FROM activityDiary WHERE recordID='$recID';";
-    $s = $db->updateData($sql);
-    return $s;
-}
+//</editor-fold>
