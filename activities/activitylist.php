@@ -97,7 +97,22 @@ $_SESSION['time'] = time();
         alert("Currently not possible...");
     }
     function deleteactys(id){
-        alert("Currently not possible...");
+        $.ajax({
+            type:"POST",
+            url:"deleteact.php",
+            data:{
+                actid: id
+            }
+        }).done(function (data) {
+            console.log(data);
+            var res = JSON.parse(data);
+            if(res.status=="error"){
+                alert("This activity is used in diary records and cannot be deleted!");
+            }
+            else{
+                showlist();
+            }
+        });
     }
     function addactys(){
         $('#addNewActivity').css({"display":"block"});
