@@ -190,9 +190,9 @@ function addActDiaryRecord($actID, $timea, $dur, $userID){
     $s = $db->updateData($sql);
     return $s;
 }
-function deleteActDiaryRecord($recID){
+function deleteActDiaryRecord($recID,$userID){
     $db = new dbclass();
-    $sql = "DELETE FROM activityDiary WHERE recordID='$recID';";
+    $sql = "DELETE FROM activityDiary WHERE recordID='$recID' and userID='$userID';";
     $s = $db->updateData($sql);
     return $s;
 }
