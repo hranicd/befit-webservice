@@ -1,5 +1,6 @@
 <?php
 require_once('dbclass.php');
+//<editor-fold desc="user login and registration">
 function userNameExistance($user){ //dal je zauzeto username ili email
 	$db = new dbclass();
 	$existUN = 0;
@@ -57,7 +58,6 @@ function registerUser($username, $email, $password) //upis korisnika u bazu
 	$s = $db->updateData($sql);
 	return $s;
 }
-
 function getUserNumberID($userID){
     $db = new dbclass();
     $sql = "select userNumberID, timeStart from userIdentity where userStringID='$userID'";
@@ -66,6 +66,8 @@ function getUserNumberID($userID){
 
     }
 }
+//</editor-fold>
+//<editor-fold desc="user details">
 function saveUserDetails($userID, $fullName, $gender, $dob, $country, $weigth, $heigth, $programID, $goalWeight){
     $db = new dbclass();
     $db2 = new dbclass();
@@ -96,6 +98,8 @@ function getUserDetails($userID){
     }else return null;
     return $userData;
 }
+//</editor-fold>
+//<editor-fold desc="foods">
 function addNewFood($name, $cal, $protein, $carbs, $fat, $servSize, $desc){
     $db = new dbclass();
     $sql = "INSERT INTO foods VALUES (NULL, '$name', '$cal', '$protein', '$carbs', '$fat', '$servSize', '$desc');";
@@ -142,6 +146,8 @@ function getUserFoods($userID){
     }else return null;
     return $records;
 }
+//<editor-fold desc="activities">
+//</editor-fold>
 function getAllActivities(){
     $db = new dbclass();
     $acts = array();
@@ -169,4 +175,22 @@ function getUserActivities($userID){
         }
     }else return null;
     return $records;
+}
+function addNewAct($name, $clh){
+    $db = new dbclass();
+    $sql = "INSERT INTO activities VALUES (NULL, '$name', '$clh');";
+    $s = $db->updateData($sql);
+    return $s;
+}
+function deleteActivity($actID){
+    $db = new dbclass();
+    $sql = "DELETE FROM activities where id='$actID'";
+    $s = $db->updateData($sql);
+    return $s;
+}
+function deleteActDiaryRecord($recID){
+    $db = new dbclass();
+    $sql = "DELETE FROM activityDiary WHERE recordID='$recID';";
+    $s = $db->updateData($sql);
+    return $s;
 }

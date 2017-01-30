@@ -41,7 +41,7 @@ $_SESSION['time'] = time();
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Foods</a></li>
-                <li><a href="#">Activities</a></li>
+                <li><a href="../activities/activitylist.php">Activities</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="../adm/admlogout.php">Logout</a></li>
