@@ -11,7 +11,7 @@ if(isset($_POST['userid'])&&isset($_POST['days'])) {
         echo json_encode($response);
         return;
     }
-    $records = getTimedFoodRecs($userID,$days);
+    $records = getTimedActRecords($userID,$days);
     if($records!=null){
         $response["status"]="success";
         $response["description"]=$records;

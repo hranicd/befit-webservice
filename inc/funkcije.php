@@ -207,4 +207,17 @@ function getUserActivities($userID){
     }else return null;
     return $records;
 }
+function getTimedActRecords($userID,$days){
+    $vrijeme = time()-$days*24*60*60;
+    $vs = date("Y-m-d",$vrijeme);
+    $db = new dbclass();
+    $records = array();
+    $result = $db->selectData("select ac.recordID as recordID, ac.time as time, ac.duration as duration, a.name as actName, a.calPerHour as cal from activityDiary ac, activities a where ac.userID='$userID' and ac.activityID=a.id and ac.time>'$vs'");
+    if ($result != null && (mysqli_num_rows($result) > 0)) {
+        while ($f = mysqli_fetch_assoc($result)){
+            $records[]=$f;
+        }
+    }else return null;
+    return $records;
+}
 //</editor-fold>
