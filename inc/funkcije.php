@@ -123,6 +123,12 @@ function deleteFood($foodID){
     $s = $db->updateData($sql);
     return $s;
 }
+function updateFood($foodID, $name, $cal, $protein, $carbs, $fat, $servSize, $desc){
+    $db = new dbclass();
+    $sql = "UPDATE foods SET name='$name', calories='$cal', protein='$protein', carbs='$carbs', fat='$fat', servSize='$servSize', description='$desc' WHERE id='$foodID'";
+    $s = $db->updateData($sql);
+    return $s;
+}
 function addFoodDiaryRecord($userID, $foodID, $time, $qnt){
     $db = new dbclass();
     $sql = "INSERT INTO foodsDiary VALUES (NULL, '$userID', '$foodID', '$time', '$qnt');";

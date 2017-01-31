@@ -66,7 +66,8 @@ $_SESSION['time'] = time();
                 <input id="serv" name="serv" type="text" placeholder="Serving size" > <br>
                 <input id="desc" name="desc" type="text" placeholder="Description" > <br>
             </div>
-            <div><button id="btnAdd" name="btnAdd" class="btn btn-success" onclick="saveFood()">Save data</button></div>
+            <div><button id="btnAdd" name="btnAdd" class="btn btn-success" onclick="saveFood()" style="display: none">Save data</button></div>
+            <div><button id="btnUpdate" name="btnUpdate" class="btn btn-success" onclick="updateFood()" style="display: none">Save data</button></div>
         </div>
 
     </div>
@@ -90,7 +91,7 @@ $_SESSION['time'] = time();
                     var farray = recs.description;
                     for (var f in farray){
                         ll+='<tr><td>'+farray[f].name+'</td><td>'+farray[f].calories+'</td><td>'+farray[f].protein+'</td><td>'+farray[f].carbs+'</td><td>'+farray[f].fat+'</td><td>'+farray[f].servSize+'</td><td>'+farray[f].description+'</td>';
-                        ll += '<td style="text-align: right"><button id="btnEdit" name="btnEdit" class="btn btn-primary" onclick="editfood('+farray[f].id+')">Edit</button></td><td><button id="btnDelete" name="btnDelete" class="btn btn-danger" onclick="deleteFood('+farray[f].id+')">Delete</button></td>';
+                        ll += '<td style="text-align: right"><button id="btnEdit" name="btnEdit" class="btn btn-primary" onclick="editfood('+farray[f].id+',\''+farray[f].name+'\','+farray[f].calories+','+farray[f].protein+','+farray[f].carbs+','+farray[f].fat+','+farray[f].servSize+',\''+farray[f].description+'\')">Edit</button></td><td><button id="btnDelete" name="btnDelete" class="btn btn-danger" onclick="deleteFood('+farray[f].id+')">Delete</button></td>';
                         ll +='</tr>';
                     }
                 ll += "</tbody></table>";
@@ -98,8 +99,58 @@ $_SESSION['time'] = time();
             lr.html(ll);
         });
     }
-    function editfood(id){
+    var edf=0;
+    function editfood(id,name,cals,prots,carb,fats,ss,des){
         alert("Currently not possible...");
+        $('#addNewFood').css({"display":"block"});
+        $('#btnUpdate').css({"display":"block"});
+        $('#btnCreate').css({"display":"none"});
+        $('#foodName').val(name);
+        $('#cal').val(cals);
+        $('#protein').val(prots);
+        $('#carbs').val(carb);
+        $('#fat').val(fats);
+        $('#serv').val(ss);
+        $('#desc').val(des);
+        edf=id;
+    }
+    function updateFood(){
+        var foodName = $('#foodName').val();
+        var cal = $('#cal').val();
+        var protein = $('#protein').val();
+        var carbs = $('#carbs').val();
+        var fat = $('#fat').val();
+        var serv = $('#serv').val();
+        var desc = $('#desc').val();
+        var fid = edf;
+        $.ajax({
+            type:"POST",
+            url:"updatefood.php",
+            data:{
+                foodid: fid,
+                name: foodName,
+                cal: cal,
+                protein:protein,
+                carbs:carbs,
+                fat:fat,
+                serv:serv,
+                desc:desc
+            }
+        }).done(function (data) {
+            console.log(data);
+            $('#foodName').val("");
+            $('#cal').val("");
+            $('#protein').val("");
+            $('#carbs').val("");
+            $('#fat').val("");
+            $('#serv').val("");
+            $('#desc').val("");
+            $('#addNewFood').css({"display":"none"});
+            $('#btnUpdate').css({"display":"none"});
+            $('#btnCreate').css({"display":"block"});
+            edf=0;
+            showlist();
+        });
     }
     function deleteFood(id){
         $.ajax({
@@ -121,6 +172,7 @@ $_SESSION['time'] = time();
     }
     function addFood(){
         $('#addNewFood').css({"display":"block"});
+        $('#btnAdd').css({"display":"block"});
         $('#btnCreate').css({"display":"none"});
     }
     function saveFood() {
@@ -154,6 +206,7 @@ $_SESSION['time'] = time();
             $('#serv').val("");
             $('#desc').val("");
             $('#addNewFood').css({"display":"none"});
+            $('#btnAdd').css({"display":"none"});
             $('#btnCreate').css({"display":"block"});
             showlist();
         });
