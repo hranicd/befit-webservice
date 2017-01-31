@@ -61,7 +61,8 @@ $_SESSION['time'] = time();
                 <input id="actysName" name="name" type="text" placeholder="Name" > <br>
                 <input id="cal" name="cal" type="number" placeholder="Calories per hour" > <br>
             </div>
-            <div><button id="btnAdd" name="btnAdd" class="btn btn-success" onclick="saveactys()">Save data</button></div>
+            <div><button id="btnAdd" name="btnAdd" class="btn btn-success" onclick="saveactys()" style="display: none">Save data</button></div>
+            <div><button id="btnUpdate" name="btnUpdate" class="btn btn-success" onclick="updateActivity()" style="display: none">Save data</button></div>
         </div>
 
     </div>
@@ -85,7 +86,7 @@ $_SESSION['time'] = time();
                 var farray = recs.description;
                 for (var f in farray){
                     ll+='<tr><td>'+farray[f].name+'</td><td>'+farray[f].calPerHour+'</td>';
-                    ll += '<td style="text-align: right"><button id="btnEdit" name="btnEdit" class="btn btn-primary" onclick="editactys('+farray[f].id+')">Edit</button></td><td><button id="btnDelete" name="btnDelete" class="btn btn-danger" onclick="deleteactys('+farray[f].id+')">Delete</button></td>';
+                    ll += '<td style="text-align: right"><button id="btnEdit" name="btnEdit" class="btn btn-primary" onclick="editactys('+farray[f].id+',\''+farray[f].name+'\','+farray[f].calPerHour+')">Edit</button></td><td><button id="btnDelete" name="btnDelete" class="btn btn-danger" onclick="deleteactys('+farray[f].id+')">Delete</button></td>';
                     ll +='</tr>';
                 }
                 ll += "</tbody></table>";
@@ -93,8 +94,36 @@ $_SESSION['time'] = time();
             lr.html(ll);
         });
     }
-    function editactys(id){
-        alert("Currently not possible...");
+    var edf = 0;
+    function editactys(id, name, cph){
+        $('#addNewActivity').css({"display":"block"});
+        $('#btnUpdate').css({"display":"block"});
+        $('#btnCreate').css({"display":"none"});
+        $('#actysName').val(name);
+        $('#cal').val(cph);
+        edf=id;
+    }
+    function updateActivity(){
+        var foodName = $('#actysName').val();
+        var cal = $('#cal').val();
+        $.ajax({
+            type:"POST",
+            url:"updateactivity.php",
+            data:{
+                actid: edf,
+                name: foodName,
+                cal: cal
+            }
+        }).done(function (data) {
+            console.log(data);
+            $('#actysName').val("");
+            $('#cal').val("");
+            $('#addNewActivity').css({"display":"none"});
+            $('#btnUpdate').css({"display":"none"});
+            $('#btnCreate').css({"display":"block"});
+            edf=0;
+            showlist();
+        });
     }
     function deleteactys(id){
         $.ajax({
@@ -116,6 +145,7 @@ $_SESSION['time'] = time();
     }
     function addactys(){
         $('#addNewActivity').css({"display":"block"});
+        $('#btnAdd').css({"display":"block"});
         $('#btnCreate').css({"display":"none"});
     }
     function saveactys() {
@@ -134,6 +164,7 @@ $_SESSION['time'] = time();
             $('#actysName').val("");
             $('#cal').val("");
             $('#addNewActivity').css({"display":"none"});
+            $('#btnAdd').css({"display":"none"});
             $('#btnCreate').css({"display":"block"});
             showlist();
         });

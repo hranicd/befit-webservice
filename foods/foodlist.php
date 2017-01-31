@@ -101,7 +101,6 @@ $_SESSION['time'] = time();
     }
     var edf=0;
     function editfood(id,name,cals,prots,carb,fats,ss,des){
-        alert("Currently not possible...");
         $('#addNewFood').css({"display":"block"});
         $('#btnUpdate').css({"display":"block"});
         $('#btnCreate').css({"display":"none"});

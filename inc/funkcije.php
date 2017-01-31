@@ -190,6 +190,12 @@ function deleteActivity($actID){
     $s = $db->updateData($sql);
     return $s;
 }
+function updateActivity($actID,$name,$cph){
+    $db = new dbclass();
+    $sql = "UPDATE activities SET name='$name', calPerHour='$cph' WHERE id='$actID'";
+    $s = $db->updateData($sql);
+    return $s;
+}
 function addActDiaryRecord($actID, $timea, $dur, $userID){
     $db = new dbclass();
     $sql = "INSERT INTO foodsDiary VALUES (NULL, '$actID', '$timea', '$dur', '$userID');";
